@@ -9,6 +9,7 @@ BUILD_DIR=$1
 VENDOR_DIR="vendor"
 DOWNLOAD_URL="http://flect.github.io/heroku-binaries/libs/ffmpeg.tar.gz"
 
+echo "BUILD_DIR = " $BUILD_DIR | indent
 echo "DOWNLOAD_URL = " $DOWNLOAD_URL | indent
 
 cd $BUILD_DIR
@@ -16,8 +17,11 @@ mkdir -p $VENDOR_DIR
 cd $VENDOR_DIR
 curl -L --silent $DOWNLOAD_URL | tar xz
 
-echo "exporting PATH and LIBRARY_PATH" | indent
+echo "exporting PATH and LIBRARY_PATH and PKG_CONFIG_PATH" | indent
 PROFILE_PATH="$BUILD_DIR/.profile.d/ffmpeg.sh"
 mkdir -p $(dirname $PROFILE_PATH)
 echo 'export PATH="$PATH:$HOME/vendor/ffmpeg/bin"' >> $PROFILE_PATH
 echo 'export LD_LIBRARY_PATH="$LD_LIBRARY_PATH:$HOME/vendor/ffmpeg/lib"' >> $PROFILE_PATH
+echo 'export PKG_CONFIG_PATH="vendor/ffmpeg/lib/pkgconfig"' >> $PROFILE_PATH
+echo "cat $PROFILE_PATH" | indent
+cat $PROFILE_PATH | indent
